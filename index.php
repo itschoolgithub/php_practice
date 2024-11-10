@@ -78,6 +78,21 @@
             // }
         });
     }
+
+    $filteredBooks = $books;
+
+    if (isset($_GET['search'])) {
+        $search = $_GET['search'];
+        $search = mb_strtolower($search);
+        
+        $filteredBooks = array_filter($books, function ($book) use ($search) {
+            if (str_contains(mb_strtolower($book['title']), $search)) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -93,6 +108,21 @@
             <div class="col">
                 <form action="" method="GET">
                     <?php getBooks($books); ?>
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Введите запрос..." name="search">
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-secondary">Найти</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <form action="" method="GET">
+                    <?php getBooks($books); ?>
                     <select class="form-select mb-1" name="order">
                         <option selected value="ASC">По возрастанию</option>
                         <option value="DESC">По убыванию</option>
@@ -103,7 +133,7 @@
         </div>
         <div class="row mb-5">
             <div class="col">
-                <?php foreach ($books as $key => $book) : ?>
+                <?php foreach ($filteredBooks as $key => $book) : ?>
                     <div class="card mb-2">
                         <div class="card-body">
                             <h5 class="card-title">
@@ -119,6 +149,12 @@
                         </div>
                     </div>
                 <?php endforeach; ?>
+                <?php if (isset($_GET['search'])) : ?>
+                    <form action="" method="GET">
+                        <?php getBooks($books); ?>
+                        <button class="btn btn-outline-secondary">Весь список</button>
+                    </form>
+                <?php endif; ?>
             </div>
         </div>
         <div class="row">
