@@ -1,4 +1,21 @@
 <?php
+    function getBooks($books) {
+        foreach ($books as $key => $book) : ?>
+            <input type="hidden"
+                name="books[<?php echo $key ?>][title]"
+                value="<?php echo $book['title'] ?>">
+            <input type="hidden"
+                name="books[<?php echo $key ?>][author]"
+                value="<?php echo $book['author'] ?>">
+            <input type="hidden"
+                name="books[<?php echo $key ?>][year]"
+                value="<?php echo $book['year'] ?>">
+            <input type="hidden"
+                name="books[<?php echo $key ?>][genre]"
+                value="<?php echo $book['genre'] ?>">
+        <?php endforeach;
+    }
+
     if (isset($_GET['books'])) {
         $books = $_GET['books'];
     } else {
@@ -50,7 +67,7 @@
     <div class="container py-4">
         <div class="row mb-5">
             <div class="col">
-                <?php foreach ($books as $book) : ?>
+                <?php foreach ($books as $key => $book) : ?>
                     <div class="card mb-2">
                         <div class="card-body">
                             <h5 class="card-title">
@@ -58,6 +75,11 @@
                             </h5>
                             <p class="card-text">Автор: <?php echo $book['author'] ?></p>
                             <p class="card-text">Жанр: <?php echo $book['genre'] ?></p>
+                            <form action="" method="GET">
+                                <?php getBooks($books) ?>
+                                <input type="hidden" name="delete" value="<?php echo $key ?>">
+                                <button class="btn btn-outline-danger">Удалить</button>
+                            </form>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -66,20 +88,7 @@
         <div class="row">
             <div class="col">
                 <form action="" method="GET">
-                    <?php foreach ($books as $key => $book) : ?>
-                        <input type="hidden"
-                            name="books[<?php echo $key ?>][title]"
-                            value="<?php echo $book['title'] ?>">
-                        <input type="hidden"
-                            name="books[<?php echo $key ?>][author]"
-                            value="<?php echo $book['author'] ?>">
-                        <input type="hidden"
-                            name="books[<?php echo $key ?>][year]"
-                            value="<?php echo $book['year'] ?>">
-                        <input type="hidden"
-                            name="books[<?php echo $key ?>][genre]"
-                            value="<?php echo $book['genre'] ?>">
-                    <?php endforeach; ?>
+                    <?php getBooks($books) ?>
                     <div class="mb-3">
                         <label for="title" class="form-label">Название книги</label>
                         <input type="text" class="form-control" id="title" name="title" placeholder="Название книги">
