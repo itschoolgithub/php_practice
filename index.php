@@ -59,6 +59,25 @@
         unset($books[$_GET['delete']]);
         $books = array_values($books);
     }
+
+    if (isset($_GET['order'])) {
+        $order = $_GET['order'];
+        usort($books, function ($book1, $book2) use ($order) {
+            if ($order == "DESC") {
+                return $book2['year'] - $book1['year'];
+            } else {
+                return $book1['year'] - $book2['year'];
+            }
+
+            // if ($book1['year'] > $book2['year']) {
+            //     return 1;
+            // } elseif ($book1['year'] == $book2['year']) {
+            //     return 0;
+            // } else {
+            //     return -1;
+            // }
+        });
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -70,6 +89,18 @@
 </head>
 <body>
     <div class="container py-4">
+        <div class="row mb-3">
+            <div class="col">
+                <form action="" method="GET">
+                    <?php getBooks($books); ?>
+                    <select class="form-select mb-1" name="order">
+                        <option selected value="ASC">По возрастанию</option>
+                        <option value="DESC">По убыванию</option>
+                    </select>
+                    <button class="btn btn-success">Сортировать</button>
+                </form>
+            </div>
+        </div>
         <div class="row mb-5">
             <div class="col">
                 <?php foreach ($books as $key => $book) : ?>
