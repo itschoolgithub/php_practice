@@ -54,6 +54,11 @@
             'genre'  => $_GET['genre']
         ];
     }
+
+    if (isset($_GET['delete'])) {
+        unset($books[$_GET['delete']]);
+        $books = array_values($books);
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
